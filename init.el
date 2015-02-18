@@ -130,7 +130,10 @@
 (use-package
  mmm-mode
  :init
- (require 'mmm-rst-python))
+ (progn
+   (require 'mmm-rst-python)
+   (setq mmm-parse-when-idle t)
+   (setq mmm-global-mode 'maybe)))
 
 (if (window-system)
     (server-start))
