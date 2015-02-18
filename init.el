@@ -134,3 +134,12 @@
 
 (if (window-system)
     (server-start))
+
+(defun my--auto-server-edit ()
+  (interactive)
+  (if server-buffer-clients
+      (server-edit)
+    (ido-kill-buffer)))
+(defun my--bind-auto-server-edit ()
+  (local-set-key (kbd "C-x k") 'my--auto-server-edit))
+(add-hook 'server-switch-hook 'my--bind-auto-server-edit)
