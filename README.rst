@@ -7,7 +7,7 @@ emacs-goodies-el.
 
 .. code-block:: console
 
-   $ git clone git@github.com:bersace/dotemacs.git ~/.emacs.d/
+   $ git clone https://github.com/bersace/dotemacs.git ~/.emacs.d/
 
 
 Relancer emacs et c'est bon.
