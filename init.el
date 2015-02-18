@@ -43,15 +43,12 @@
 
 (require 'package)
 (add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
 	     '("elpy" . "http://jorgenschaefer.github.io/packages/") t)
 
 (defvar my--packages
-  '(
-    coffee-mode
+  '(coffee-mode
     django-mode
     dockerfile-mode
     elpy
@@ -63,8 +60,7 @@
     mmm-mode
     pip-requirements
     use-package
-    yaml-mode
-    ))
+    yaml-mode))
 
 (package-initialize)
 
