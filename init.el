@@ -92,7 +92,8 @@
 
    ;; Configure elpy pour les gros fichiers, sans complétion
    (defun my--python-large-file ()
-     (when (> (buffer-size) elpy-rpc-large-buffer-size)
+     (when (> (buffer-size) 100000)
+       (message "Degraded mode for large python file")
        (setq undo-limit 10)
        (make-variable-buffer-local 'mmm-global-mode)
        (setq mmm-global-mode nil)
