@@ -94,6 +94,8 @@
    (defun my--python-large-file ()
      (when (> (buffer-size) elpy-rpc-large-buffer-size)
        (setq undo-limit 10)
+       (make-variable-buffer-local 'mmm-global-mode)
+       (setq mmm-global-mode nil)
        (setq font-lock-support-mode 'jit-lock-mode)
        (setq jit-lock-stealth-time 16
 	     jit-lock-defer-contextually t
