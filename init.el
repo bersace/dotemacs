@@ -20,16 +20,6 @@
  '(backup-directory-alist (quote (("." . "~/.emacs.d/saves"))))
  '(column-number-mode t)
  '(custom-enabled-themes (quote (tango-dark)))
- '(elpy-interactive-python-command
-   (quote
-    (funcall
-     (function
-      #[0 "\300\207"
-	  ["python"]
-	  1 "python
-
-(fn)"]))))
- '(elpy-mode-hook (quote (subword-mode hl-line-mode)))
  '(fill-column 79)
  '(font-use-system-font t)
  '(global-linum-mode t)
