@@ -130,10 +130,19 @@
 (use-package
  mmm-mode
  :init
- (progn
+ (progn 
    (require 'mmm-rst-python)
    (setq mmm-parse-when-idle t)
    (setq mmm-global-mode 'maybe)))
+
+(use-package
+ django-mode
+ :init
+ (progn
+   (setq auto-mode-alist
+	 (delete
+	  '("\\<\\(models\\|views\\|handlers\\|feeds\\|sitemaps\\|admin\\|context_processors\\|urls\\|settings\\|tests\\|assets\\|forms\\)\\.py\\'" . django-mode)
+	  auto-mode-alist))))
 
 (if (window-system)
     (server-start))
