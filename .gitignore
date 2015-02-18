@@ -1,0 +1,7 @@
+.*
+!.gitignore
+*~
+elpa/
+ido.last
+saves/
+session*
