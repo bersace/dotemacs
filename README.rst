@@ -11,4 +11,4 @@ C'est juste le dossier `.emacs.d` brut.
 
 Relancer emacs et c'est bon.
 
-.. warning:: Les paquets sont installés à l'initialisation
+**Attention** Les paquets sont installés à l'initialisation
