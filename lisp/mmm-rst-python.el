@@ -1,4 +1,5 @@
 (require 'python)
+(require 'mmm-mode)
 
 (defun rst-python-statement-is-docstring (begin)
   "Return true if beginning of statiment is :begin"
@@ -9,8 +10,6 @@
 
 (defun rst-python-front-verify ()
   (rst-python-statement-is-docstring (match-string 0)))
-
-(require 'mmm-mode)
 
 (add-to-list 'mmm-save-local-variables 'adaptive-fill-regexp)
 (add-to-list 'mmm-save-local-variables 'fill-paragraph-function)
@@ -24,8 +23,6 @@
     :back "~1"
     :end-not-begin t
     :save-matches 1
-    ;; :front rst-python-docstrings-find-front
-    ;; :back rst-python-docstrings-find-back
     :insert ((?d embdocstring nil @ "u\"\"\"" @ _ @ "\"\"\"" @))
     :delimiter-mode nil)))
 
