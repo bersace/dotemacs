@@ -124,7 +124,7 @@
 (add-hook 'prog-mode-hook 'highlight-beyond-fill-column)
 
 (add-to-list 'auto-mode-alist
-	     '("docs/.*\\.txt\\'" . rst-mode))
+	     '("source/.*\\.txt\\'" . rst-mode))
 (add-to-list 'auto-mode-alist
 	     '("CHANGELOG" . rst-mode))
 (add-to-list 'auto-mode-alist
