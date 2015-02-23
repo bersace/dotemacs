@@ -142,6 +142,8 @@
 (add-to-list 'auto-mode-alist
 	     '("source/.*\\.txt\\'" . rst-mode))
 (add-to-list 'auto-mode-alist
+	     '("docs/.*\\.txt\\'" . rst-mode))
+(add-to-list 'auto-mode-alist
 	     '("CHANGELOG" . rst-mode))
 ;; Pour salt
 (add-to-list 'auto-mode-alist
