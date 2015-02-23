@@ -1,10 +1,12 @@
+
+;; Dit à GTK+ d'utiliser la variante sombre du thème. Pas valable pour
+;; la décoration de fenêtre.
 (defun set-selected-frame-dark ()
   (interactive)
   (call-process-shell-command
    (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT \"dark\" -name \""
 	   (cdr (assq 'name (frame-parameters (selected-frame))))
 	   "\"")))
-
 (if (window-system)
     (set-selected-frame-dark))
 
@@ -39,28 +41,38 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
+;; Poser toujours la même question pour oui ou non.
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; Configuration des dépôts de paquets emacs
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
 	     '("elpy" . "http://jorgenschaefer.github.io/packages/") t)
 
+;; Installation des dépendances de paquets emacs
 (defvar my--packages
-  '(coffee-mode
+  '(
+    ;; Pour configurer les paquets installés seulement
+    use-package
+    ;; Mode pour langage de programmation
+    coffee-mode
     django-mode
     dockerfile-mode
-    elpy
-    fill-column-indicator
-    git-commit-mode
-    git-rebase-mode
     less-css-mode
-    magit
     mmm-mode
     pip-requirements
-    use-package
-    yaml-mode))
+    yaml-mode
+    ;; Combo autocomplétion, validation syntaxique, snippets, etc. pour python
+    elpy
+    ;; Indicateur de colonne 80 caractères
+    fill-column-indicator
+    ;; modes pour git
+    git-commit-mode
+    git-rebase-mode
+    magit
+    ))
 
 (package-initialize)
 
@@ -83,6 +95,7 @@
 
 (require 'use-package)
 (setq use-package-verbose nil)
+
 
 (use-package
  elpy
@@ -113,31 +126,40 @@
        (elpy-modules-buffer-init)))
 
    (add-hook 'elpy-mode-hook 'my--python-large-file)
-   ;; Utiliser uniquement les snippets elpy et perso
+
+   ;; Utiliser uniquement les snippets elpy et perso. Car sinon, on se
+   ;; retrouve avec des doublons.
    (setq yas-snippet-dirs
 	 (list (expand-file-name "~/.emacs.d/snippets")
 	       (concat (file-name-directory (locate-library "elpy"))
 		       "snippets/")))
    (yas-reload-all)))
 
+;; Nettoye les espaces superflus
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Surligne les fins de lignes trop longues
 (add-hook 'prog-mode-hook 'highlight-beyond-fill-column)
 
+;; Associations supplémentaires
 (add-to-list 'auto-mode-alist
 	     '("source/.*\\.txt\\'" . rst-mode))
 (add-to-list 'auto-mode-alist
 	     '("CHANGELOG" . rst-mode))
+;; Pour salt
 (add-to-list 'auto-mode-alist
 	     '("\\.sls\\'" . yaml-mode))
 
+;; Activer le mode ReSTructured text dans les docstring
 (use-package
  mmm-mode
  :init
- (progn 
+ (progn
    (require 'mmm-rst-python)
    (setq mmm-parse-when-idle t)
    (setq mmm-global-mode 'maybe)))
 
+;; Désactiver le mode django, on veut python-mode. django-mode n'est
+;; utile que pour les gabarits.
 (use-package
  django-mode
  :init
@@ -147,9 +169,12 @@
 	  '("\\<\\(models\\|views\\|handlers\\|feeds\\|sitemaps\\|admin\\|context_processors\\|urls\\|settings\\|tests\\|assets\\|forms\\)\\.py\\'" . django-mode)
 	  auto-mode-alist))))
 
+;; Mode serveur, n'avoir qu'une instance d'emacs. Penser à configurer
+;; git pour utiliser emacsclient !
 (if (window-system)
     (server-start))
 
+;; C-x # implicite avec C-x k
 (defun my--auto-server-edit ()
   (interactive)
   (if server-buffer-clients

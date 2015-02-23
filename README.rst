@@ -2,7 +2,8 @@
  Installation
 ==============
 
-C'est juste le dossier `.emacs.d` brut.
+C'est juste le dossier `.emacs.d` brut. Installer emacs24,
+emacs-goodies-el.
 
 .. code-block:: console
 
