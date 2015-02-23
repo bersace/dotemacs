@@ -66,8 +66,6 @@
     yaml-mode
     ;; Combo autocomplétion, validation syntaxique, snippets, etc. pour python
     elpy
-    ;; Indicateur de colonne 80 caractères
-    fill-column-indicator
     ;; modes pour git
     git-commit-mode
     git-rebase-mode
