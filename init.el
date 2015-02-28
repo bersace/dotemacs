@@ -1,14 +1,9 @@
-
-;; Dit à GTK+ d'utiliser la variante sombre du thème. Pas valable pour
-;; la décoration de fenêtre.
-(defun set-selected-frame-dark ()
-  (interactive)
+;; Dit à GTK+ d'utiliser la variante sombre du thème. Valable pour la
+;; décoration de fenêtre uniqument.
+(when (window-system)
   (call-process-shell-command
-   (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT \"dark\" -name \""
-	   (cdr (assq 'name (frame-parameters (selected-frame))))
-	   "\"")))
-(if (window-system)
-    (set-selected-frame-dark))
+   (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT \"dark\" -name "
+	   "\"" (cdr (assq 'name (frame-parameters (selected-frame)))) "\"")))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -40,9 +35,7 @@
  '(highlight-beyond-fill-column-face ((t (:foreground "red")))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-;; Poser toujours la même question pour oui ou non.
 (defalias 'yes-or-no-p 'y-or-n-p)
-;; Nettoye les espaces superflus
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Configuration des dépôts de paquets emacs
@@ -68,19 +61,15 @@
 (use-package less-css-mode :ensure t)
 (use-package magit :ensure t)
 
-;; Surligne les fins de lignes trop longues
 (use-package
  highlight-beyond-fill-column-face
  :init (add-hook 'prog-mode-hook 'highlight-beyond-fill-column))
 
-;; Pour salt
 (use-package
  yaml-mode
  :ensure t
- :init (add-to-list 'auto-mode-alist
-		    '("\\.sls\\'" . yaml-mode)))
+ :init (add-to-list 'auto-mode-alist '("\\.sls\\'" . yaml-mode)))
 
-;; Associations supplémentaires pour rst
 (use-package
  rst-mode
  :init (progn
@@ -100,62 +89,60 @@
 	 (setq mmm-parse-when-idle t)
 	 (setq mmm-global-mode 'maybe)))
 
-
 (use-package
  elpy
  :ensure t
- :init
- (progn
-   (elpy-enable)
+ :init (progn
+	 (elpy-enable)
+	 ;; Configure elpy pour les gros fichiers, sans complétion
+	 (defun my--python-large-file ()
+	   (when (> (buffer-size) 100000)
+	     (message "Degraded mode for large python file")
+	     (setq undo-limit 10)
+	     (make-variable-buffer-local 'mmm-global-mode)
+	     (setq mmm-global-mode nil)
+	     (setq font-lock-support-mode 'jit-lock-mode)
+	     (setq jit-lock-stealth-time 16
+		   jit-lock-defer-contextually t
+		   jit-lock-stealth-nice 1
+		   jit-lock-stealh-load 10)
+	     (setq-default font-lock-multiline t)
+	     (elpy-modules-buffer-stop)
+	     (make-variable-buffer-local 'elpy-modules)
+	     (setq elpy-modules
+		   '(elpy-module-flymake
+		     elpy-module-yasnippet
+		     elpy-module-pyvenv
+		     elpy-module-sane-defaults))
+	     (elpy-modules-buffer-init)))
+	 
+	 (add-hook 'elpy-mode-hook 'my--python-large-file)
+	 
+	 ;; Utiliser uniquement les snippets elpy et perso. Car sinon,
+	 ;; on se retrouve avec des doublons.
+	 (setq yas-snippet-dirs
+	       (list (expand-file-name "~/.emacs.d/snippets")
+		     (concat (file-name-directory
+			      (locate-library "elpy"))
+			     "snippets/")))
+	 (yas-reload-all)))
 
-   ;; Configure elpy pour les gros fichiers, sans complétion
-   (defun my--python-large-file ()
-     (when (> (buffer-size) 100000)
-       (message "Degraded mode for large python file")
-       (setq undo-limit 10)
-       (make-variable-buffer-local 'mmm-global-mode)
-       (setq mmm-global-mode nil)
-       (setq font-lock-support-mode 'jit-lock-mode)
-       (setq jit-lock-stealth-time 16
-	     jit-lock-defer-contextually t
-	     jit-lock-stealth-nice 1
-	     jit-lock-stealh-load 10)
-       (setq-default font-lock-multiline t)
-       (elpy-modules-buffer-stop)
-       (make-variable-buffer-local 'elpy-modules)
-       (setq elpy-modules
-	     '(elpy-module-flymake
-	       elpy-module-yasnippet
-	       elpy-module-pyvenv
-	       elpy-module-sane-defaults))
-       (elpy-modules-buffer-init)))
-
-   (add-hook 'elpy-mode-hook 'my--python-large-file)
-
-   ;; Utiliser uniquement les snippets elpy et perso. Car sinon, on se
-   ;; retrouve avec des doublons.
-   (setq yas-snippet-dirs
-	 (list (expand-file-name "~/.emacs.d/snippets")
-	       (concat (file-name-directory (locate-library "elpy"))
-		       "snippets/")))
-   (yas-reload-all)))
-
-;; Mode serveur, n'avoir qu'une instance d'emacs. Penser à configurer
-;; git pour utiliser emacsclient !
-(if (window-system)
-    (server-start))
-
-;; C-x # implicite avec C-x k
-(defun my--auto-server-edit ()
-  (interactive)
-  (if server-buffer-clients
-      (server-edit)
-    (ido-kill-buffer)))
-(defun my--bind-auto-server-edit ()
-  (local-set-key (kbd "C-x k") 'my--auto-server-edit))
-(add-hook 'server-switch-hook 'my--bind-auto-server-edit)
-
-
+;; Après les installation, fermer la fenêtre de log
 (let ((window (get-buffer-window "*Compile-Log*")))
   (when window
     (delete-window window)))
+
+;; Mode serveur, n'avoir qu'une instance d'emacs. Penser à configurer
+;; git pour utiliser emacsclient !
+(when (window-system)
+  (progn
+    (server-start)
+    ;; C-x # implicite avec C-x k
+    (defun my--auto-server-edit ()
+      (interactive)
+      (if server-buffer-clients
+	  (server-edit)
+	(ido-kill-buffer)))
+    (defun my--bind-auto-server-edit ()
+      (local-set-key (kbd "C-x k") 'my--auto-server-edit))
+    (add-hook 'server-switch-hook 'my--bind-auto-server-edit)))
