@@ -81,12 +81,4 @@
 ;; Mode serveur. Penser à configurer git pour utiliser emacsclient !
 (when (window-system)
   (server-start)
-  ;; C-x # implicite avec C-x k
-  (defun my--auto-server-edit ()
-    (interactive)
-    (if server-buffer-clients
-	(server-edit)
-      (ido-kill-buffer)))
-  (defun my--bind-auto-server-edit ()
-    (local-set-key (kbd "C-x k") 'my--auto-server-edit))
-  (add-hook 'server-switch-hook 'my--bind-auto-server-edit))
+  (require 'server-auto-edit))
