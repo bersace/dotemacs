@@ -1,17 +1,14 @@
-;; Dit à GTK+ d'utiliser la variante sombre du thème. Valable pour la
-;; décoration de fenêtre uniqument.
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 (when (window-system)
-  (call-process-shell-command
-   (concat "xprop -f _GTK_THEME_VARIANT 8u -set _GTK_THEME_VARIANT \"dark\" -name "
-	   "\"" (cdr (assq 'name (frame-parameters (selected-frame)))) "\"")))
+  (require 'dark-theme))
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Configuration des dépôts de paquets emacs
+;; Configuration des dépôts ELPA
 (require 'package)
 (add-to-list 'package-archives
              '("elpy" . "http://jorgenschaefer.github.io/packages/"))
