@@ -64,30 +64,7 @@
  elpy :ensure t
  :init (progn
 	 (elpy-enable)
-	 ;; Configure elpy pour les gros fichiers, sans complétion
-	 (defun my--python-large-file ()
-	   (when (> (buffer-size) 100000)
-	     (message "Degraded mode for large python file")
-	     (setq undo-limit 10)
-	     (make-variable-buffer-local 'mmm-global-mode)
-	     (setq mmm-global-mode nil)
-	     (setq font-lock-support-mode 'jit-lock-mode)
-	     (setq jit-lock-stealth-time 16
-		   jit-lock-defer-contextually t
-		   jit-lock-stealth-nice 1
-		   jit-lock-stealh-load 10)
-	     (setq-default font-lock-multiline t)
-	     (elpy-modules-buffer-stop)
-	     (make-variable-buffer-local 'elpy-modules)
-	     (setq elpy-modules
-		   '(elpy-module-flymake
-		     elpy-module-yasnippet
-		     elpy-module-pyvenv
-		     elpy-module-sane-defaults))
-	     (elpy-modules-buffer-init)))
-	 
-	 (add-hook 'elpy-mode-hook 'my--python-large-file)
-	 
+	 (require 'elpy-large)
 	 ;; Éviter les doublons elpy/yasnippet
 	 (setq yas-snippet-dirs
 	       (list (expand-file-name "~/.emacs.d/snippets")
