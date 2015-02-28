@@ -40,7 +40,6 @@
  '(highlight-beyond-fill-column-face ((t (:foreground "red")))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-(setq inhibit-startup-echo-area-message (user-login-name))
 ;; Poser toujours la même question pour oui ou non.
 (defalias 'yes-or-no-p 'y-or-n-p)
 ;; Nettoye les espaces superflus
@@ -155,3 +154,8 @@
 (defun my--bind-auto-server-edit ()
   (local-set-key (kbd "C-x k") 'my--auto-server-edit))
 (add-hook 'server-switch-hook 'my--bind-auto-server-edit)
+
+
+(let ((window (get-buffer-window "*Compile-Log*")))
+  (when window
+    (delete-window window)))
