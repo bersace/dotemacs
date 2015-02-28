@@ -40,61 +40,71 @@
  '(highlight-beyond-fill-column-face ((t (:foreground "red")))))
 
 (add-to-list 'load-path "~/.emacs.d/lisp/")
-
+(setq inhibit-startup-echo-area-message (user-login-name))
 ;; Poser toujours la même question pour oui ou non.
 (defalias 'yes-or-no-p 'y-or-n-p)
+;; Nettoye les espaces superflus
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Configuration des dépôts de paquets emacs
 (require 'package)
 (add-to-list 'package-archives
-	     '("elpy" . "http://jorgenschaefer.github.io/packages/") t)
-
-;; Installation des dépendances de paquets emacs
-(defvar my--packages
-  '(
-    ;; Pour configurer les paquets installés seulement
-    use-package
-    ;; Mode pour langage de programmation
-    coffee-mode
-    django-mode
-    dockerfile-mode
-    less-css-mode
-    mmm-mode
-    pip-requirements
-    yaml-mode
-    ;; Combo autocomplétion, validation syntaxique, snippets, etc. pour python
-    elpy
-    ;; modes pour git
-    git-commit-mode
-    git-rebase-mode
-    magit
-    ))
-
+             '("elpy" . "http://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (package-initialize)
-
-(require 'cl)
-(defun my--packages-missing ()
-  (loop for p in my--packages
-	when (not (package-installed-p p)) do (return t)
-	finally (return nil)))
-
-(defun my--install-dependencies ()
-  (interactive)
-  (when (my--packages-missing)
-    (message "Installing dependencies... Please wait!")
-    (package-refresh-contents)
-    (dolist (pack my--packages)
-      (unless (package-installed-p pack)
-	(package-install pack)))))
-
-(my--install-dependencies)
-
+(unless package-archive-contents
+  (message "Installing dependencies... Please wait!")
+  (package-refresh-contents))
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))
 (require 'use-package)
 (setq use-package-verbose nil)
+
+;; Divers modes de programmation
+(use-package coffee-mode :ensure t)
+(use-package dockerfile-mode :ensure t)
+(use-package git-commit-mode :ensure t)
+(use-package git-rebase-mode :ensure t)
+(use-package less-css-mode :ensure t)
+(use-package magit :ensure t)
+
+;; Surligne les fins de lignes trop longues
+(use-package
+ highlight-beyond-fill-column-face
+ :init (add-hook 'prog-mode-hook 'highlight-beyond-fill-column))
+
+;; Pour salt
+(use-package
+ yaml-mode
+ :ensure t
+ :init (add-to-list 'auto-mode-alist
+		    '("\\.sls\\'" . yaml-mode)))
+
+;; Associations supplémentaires pour rst
+(use-package
+ rst-mode
+ :init (progn
+	 (add-to-list 'auto-mode-alist
+		      '("source/.*\\.txt\\'" . rst-mode))
+	 (add-to-list 'auto-mode-alist
+		      '("docs/.*\\.txt\\'" . rst-mode))
+	 (add-to-list 'auto-mode-alist
+		      '("CHANGELOG" . rst-mode))))
+
+;; Activer le mode ReSTructured text dans les docstring
+(use-package
+ mmm-mode
+ :ensure t
+ :init (progn
+	 (require 'mmm-rst-python)
+	 (setq mmm-parse-when-idle t)
+	 (setq mmm-global-mode 'maybe)))
 
 
 (use-package
  elpy
+ :ensure t
  :init
  (progn
    (elpy-enable)
@@ -130,42 +140,6 @@
 	       (concat (file-name-directory (locate-library "elpy"))
 		       "snippets/")))
    (yas-reload-all)))
-
-;; Nettoye les espaces superflus
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-;; Surligne les fins de lignes trop longues
-(add-hook 'prog-mode-hook 'highlight-beyond-fill-column)
-
-;; Associations supplémentaires
-(add-to-list 'auto-mode-alist
-	     '("source/.*\\.txt\\'" . rst-mode))
-(add-to-list 'auto-mode-alist
-	     '("docs/.*\\.txt\\'" . rst-mode))
-(add-to-list 'auto-mode-alist
-	     '("CHANGELOG" . rst-mode))
-;; Pour salt
-(add-to-list 'auto-mode-alist
-	     '("\\.sls\\'" . yaml-mode))
-
-;; Activer le mode ReSTructured text dans les docstring
-(use-package
- mmm-mode
- :init
- (progn
-   (require 'mmm-rst-python)
-   (setq mmm-parse-when-idle t)
-   (setq mmm-global-mode 'maybe)))
-
-;; Désactiver le mode django, on veut python-mode. django-mode n'est
-;; utile que pour les gabarits.
-(use-package
- django-mode
- :init
- (progn
-   (setq auto-mode-alist
-	 (delete
-	  '("\\<\\(models\\|views\\|handlers\\|feeds\\|sitemaps\\|admin\\|context_processors\\|urls\\|settings\\|tests\\|assets\\|forms\\)\\.py\\'" . django-mode)
-	  auto-mode-alist))))
 
 ;; Mode serveur, n'avoir qu'une instance d'emacs. Penser à configurer
 ;; git pour utiliser emacsclient !
