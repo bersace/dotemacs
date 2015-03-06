@@ -32,6 +32,10 @@
 (use-package magit :ensure t)
 
 (use-package
+ markdown-mode :ensure t
+ :init (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode)))
+
+(use-package
  highlight-beyond-fill-column-face
  :init (add-hook 'prog-mode-hook 'highlight-beyond-fill-column))
 
