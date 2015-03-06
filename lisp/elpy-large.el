@@ -1,7 +1,7 @@
 (require 'elpy)
 
 (defun elpy-large-file ()
-  (when (> (buffer-size) 100000)
+  (when (> (buffer-size) 20000)
     (message "Degraded mode for large python file")
     (setq undo-limit 10)
     (make-variable-buffer-local 'mmm-global-mode)
@@ -15,7 +15,7 @@
 	    elpy-module-pyvenv
 	    elpy-module-sane-defaults))
     (elpy-modules-buffer-init)))
-	 
+
 (add-hook 'elpy-mode-hook 'elpy-large-file)
 
 (provide 'elpy-large)
