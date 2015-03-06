@@ -1,6 +1,8 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 
 (when (window-system)
+  (when (string= "Ubuntu\n" (shell-command-to-string "lsb_release --short --id"))
+    (call-process-shell-command "setxkbmap -print | xkbcomp - $DISPLAY" nil 0))
   (require 'dark-theme))
 
 (setq custom-file "~/.emacs.d/custom.el")
