@@ -14,6 +14,7 @@
  '(font-use-system-font t)
  '(global-linum-mode t)
  '(ido-mode (quote both) nil (ido))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(line-number-mode t)
  '(python-fill-docstring-style (quote pep-257-nn))
