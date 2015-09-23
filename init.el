@@ -28,8 +28,6 @@
 ;; Divers modes de programmation
 (use-package coffee-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
-(use-package git-commit-mode :ensure t)
-(use-package git-rebase-mode :ensure t)
 (use-package less-css-mode :ensure t)
 (use-package magit :ensure t)
 
