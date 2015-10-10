@@ -54,6 +54,13 @@
            (add-to-list 'auto-mode-alist
                         '("CHANGELOG" . rst-mode))))
 
+  (use-package
+    yasnippet :ensure t
+    :init (progn
+          ;; Ne pas utiliser les snippets par défaut. elpy rajoutera les siens.
+          (setq yas-snippet-dirs
+                (list (expand-file-name "~/.emacs.d/snippets")))))
+
   ;; Activer le mode ReSTructured text dans les docstring
   (use-package
    mmm-mode :ensure t
@@ -63,17 +70,17 @@
            (setq mmm-global-mode 'maybe)))
 
   (use-package
-   elpy :ensure t
-   :init (progn
-           (elpy-enable)
-           (require 'elpy-large)
-           ;; Éviter les doublons elpy/yasnippet
-           (setq yas-snippet-dirs
-                 (list (expand-file-name "~/.emacs.d/snippets")
-                       (concat (file-name-directory
-                                (locate-library "elpy"))
-                               "snippets/")))
-           (yas-reload-all))))
+    elpy :ensure t
+    :init (progn
+            (require 'my-elpy)
+            (my-elpy-enable)))
+
+  ;; Activer le mode ReSTructured text dans les docstring
+  (use-package
+    mmm-mode :ensure t
+    :init (progn
+            (require 'my-mmm-mode)
+            (add-hook 'find-file-hook 'my-mmm-mode))))
 
 ;; Après les installations, fermer la fenêtre de log
 (let ((window (get-buffer-window "*Compile-Log*")))
