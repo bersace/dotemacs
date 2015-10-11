@@ -17,5 +17,5 @@ elif ! [ $# = 0 ] ; then
     wmctrl -ia $client_winid
 else
     # Nothing, just switch to emacs
-    echo "Showing emacs window." >&25A
+    echo "Showing emacs window." >&2
 fi
