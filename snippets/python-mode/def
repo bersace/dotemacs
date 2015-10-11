@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: def function()
+# key: def
+# group: Definitions
+# --
+def ${1:name}($2):
+    \"\"\"
+    \"\"\"
+    $0

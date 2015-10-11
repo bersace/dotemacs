@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: logger
+# key: ln
+# group: Header
+# --
+logger = logging.getLogger(__name__)

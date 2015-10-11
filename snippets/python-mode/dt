@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: def test_*
+# key: dt
+# group: Testing
+# --
+def test_${1:long_name}(${2:self}):
+    $0

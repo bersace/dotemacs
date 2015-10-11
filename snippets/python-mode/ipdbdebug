@@ -1,6 +1,6 @@
 # -*- mode: snippet; require-final-newline: nil -*-
 # name: ipdb trace
 # key: itr
-# group: debug
+# group: Debug
 # --
 import ipdb; ipdb.set_trace()  # noqa

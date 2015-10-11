@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: classmethod
+# key: cm
+# group: Definitions
+# --
+@classmethod
+def ${2:meth}(cls, $1):
+    $0
