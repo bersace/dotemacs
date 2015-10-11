@@ -1,4 +1,4 @@
-(add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "~/.emacs.d/site-lisp/")
 
 (when (window-system)
   (when (string= "Ubuntu\n" (shell-command-to-string "lsb_release --short --id"))
