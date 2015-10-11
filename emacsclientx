@@ -2,12 +2,12 @@
 
 set -e
 
-# Note that the exit in END is what determines the final exit status,
-# even t/pre~hough the previous exit initiates the exit.
+# Note that the exit in END is what determines the final exit status, even
+# though the previous exit initiates the exit.
 client_winid=$(wmctrl -a :ACTIVE: -v 2>&1 \
 	| awk '/^Using window:/ { print $3; exit_status = 0; exit }')
 
-# Switch to emacs and wait for editing to be completed.
+# Switch to emacs and wait for editing to complete.
 if ! wmctrl -xa emacs ; then
     emacs -nw $@;
 elif ! [ $# = 0 ] ; then
