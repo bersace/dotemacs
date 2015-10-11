@@ -9,10 +9,13 @@ client_winid=$(wmctrl -a :ACTIVE: -v 2>&1 \
 
 # Switch to emacs and wait for editing to be completed.
 if ! wmctrl -xa emacs ; then
-    emacs -nw $@
-else
-    emacsclient $@
-fi
+    emacs -nw $@;
+elif ! [ $# = 0 ] ; then
+    emacsclient $@ || true
 
-# Switch back to window from which emacsclient was invoked.
-wmctrl -ia $client_winid
+    # Switch back to window from which emacsclient was invoked.
+    wmctrl -ia $client_winid
+else
+    # Nothing, just switch to emacs
+    echo "Showing emacs window." >&25A
+fi
