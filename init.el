@@ -8,6 +8,7 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 (defalias 'yes-or-no-p 'y-or-n-p)
+(require 'iso-transl)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (when (>= emacs-major-version 24)
