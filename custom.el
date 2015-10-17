@@ -21,6 +21,7 @@
  '(line-number-mode t)
  '(python-fill-docstring-style (quote pep-257-nn))
  '(python-shell-interpreter "ipython")
+ '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(truncate-lines t))
 (custom-set-faces
