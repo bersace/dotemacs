@@ -9,6 +9,8 @@
  '(backup-by-copying-when-linked t)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/saves"))))
  '(column-number-mode t)
+ '(cua-enable-cua-keys t)
+ '(cua-mode t nil (cua-base))
  '(custom-enabled-themes (quote (tango-dark)))
  '(fill-column 79)
  '(font-use-system-font t)
