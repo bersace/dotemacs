@@ -1,4 +1,4 @@
-(require 'mmm-defaults)
+;; (require 'mmm-defaults)
 (require 'mmm-rst-python)
 
 (setq mmm-parse-when-idle t)
