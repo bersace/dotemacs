@@ -62,19 +62,19 @@
           (setq yas-snippet-dirs
                 (list (expand-file-name "~/.emacs.d/snippets")))))
 
+  (use-package
+    elpy :ensure t
+    :init (progn
+            (require 'my-elpy)
+            (my-elpy-enable)))
+
   ;; Activer le mode ReSTructured text dans les docstring
   (use-package
    mmm-mode :ensure t
    :init (progn
            ;; Activer le mode ReSTructured text dans les docstring
            (require 'my-mmm-mode)
-           (add-hook 'find-file-hook 'my-mmm-mode)))
-
-  (use-package
-    elpy :ensure t
-    :init (progn
-            (require 'my-elpy)
-            (my-elpy-enable))))
+           (add-hook 'find-file-hook 'my-mmm-mode))))
 
 ;; Après les installations, fermer la fenêtre de log
 (let ((window (get-buffer-window "*Compile-Log*")))
