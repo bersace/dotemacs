@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: pytest trace
+# key: ptr
+# group: Debug
+# --
+import pytest; pytest.set_trace()  # noqa
