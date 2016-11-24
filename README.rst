@@ -1,3 +1,12 @@
+===============
+ Avertissement
+===============
+
+Je suis passé à l'excellent `Spacemacs <http://spacemacs.org/>`_ plutôt que de
+maintenir ma propre configuration. Je laisse bien sûr ce dépôt pour la
+postérité.
+
+
 ==============
  Installation
 ==============
